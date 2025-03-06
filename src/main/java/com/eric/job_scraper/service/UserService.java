@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+// Used to mark a class as a service component in the Spring framework.
 public class UserService {
 
     private final UserRepository userRepository;
 
     @Autowired
+    // Used to automatically inject dependencies (of dependencies) into your class.
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -23,6 +25,25 @@ public class UserService {
 
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public User updateUser(Long id, User user) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        if (existingUser == null) {
+            return null;
+        }
+        existingUser.setUsername(user.getUsername());
+        existingUser.setPassword(user.getPassword());
+        return userRepository.save(existingUser);
+    }
+
+    public boolean deleteUser(Long id) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        if (existingUser == null) {
+            return false;
+        }
+        userRepository.deleteById(id);
+        return true;
     }
 
 }
