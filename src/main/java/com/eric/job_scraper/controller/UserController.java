@@ -49,4 +49,29 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}")
+    // Shorthand versions of @RequestMapping for specific HTTP methods.
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        // Same annotations used in createUser & getUserById
+        User updatedUser = userService.updateUser(id, user);
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(updatedUser);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    // Shorthand versions of @RequestMapping for specific HTTP methods.
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        // If you have a URL like /users/{id}, @PathVariable lets Spring Boot know that
+        // the {id} part should be treated as a variable and passed to your method as a parameter.
+        boolean userDeleted = userService.deleteUser(id);
+        if (userDeleted == false) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
 }
