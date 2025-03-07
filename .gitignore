@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### maven ###
+mvnw
+mwnw.cmd
+
+### Enviornment Variables ###
+.env
