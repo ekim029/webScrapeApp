@@ -1,9 +1,14 @@
 package com.eric.job_scraper.model;
-
 import jakarta.persistence.*;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
+
 public class User {
 
     @Id
@@ -11,31 +16,14 @@ public class User {
 
     private Long id;
     private String username;
-    private String password;
+    private String email;
 
-    public User() {}
-    public User(String username, String password) {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Preference> preferences; // One user can have many preferences
+
+    public User() { }
+    public User(String username, String email) {
         this.username = username;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        this.email = email;
     }
 }
