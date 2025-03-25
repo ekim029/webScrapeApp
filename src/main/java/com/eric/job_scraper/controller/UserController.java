@@ -2,7 +2,6 @@ package com.eric.job_scraper.controller;
 
 import com.eric.job_scraper.model.User;
 import com.eric.job_scraper.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +16,6 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-
-    @Autowired
-    // Used to automatically inject dependencies (of dependencies) into your class.
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -67,7 +63,7 @@ public class UserController {
         // If you have a URL like /users/{id}, @PathVariable lets Spring Boot know that
         // the {id} part should be treated as a variable and passed to your method as a parameter.
         boolean userDeleted = userService.deleteUser(id);
-        if (userDeleted == false) {
+        if (!userDeleted) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.noContent().build();
