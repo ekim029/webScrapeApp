@@ -1,4 +1,5 @@
 package com.eric.job_scraper.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Manage the forward side of the relationship
     private List<Preference> preferences; // One user can have many preferences
 
     public User() { }

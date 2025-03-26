@@ -1,4 +1,5 @@
 package com.eric.job_scraper.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Preference {
 
     @ManyToOne // many Preference entities can be associated with one User entity
     @JoinColumn(name = "user_id") // name attribute defines the name of the foreign key column (user_id)
+    @JsonBackReference  // Prevent infinite recursion by not serializing the "user" side of the relationship
     private User user;
 
 }
