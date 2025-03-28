@@ -1,7 +1,7 @@
 package com.eric.job_scraper.controller;
 
 import com.eric.job_scraper.model.Preference;
-import com.eric.job_scraper.service.PreferenceService;
+import com.eric.job_scraper.service.core.PreferenceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

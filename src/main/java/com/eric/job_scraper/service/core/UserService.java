@@ -1,4 +1,4 @@
-package com.eric.job_scraper.service;
+package com.eric.job_scraper.service.core;
 
 import com.eric.job_scraper.model.User;
 import com.eric.job_scraper.repository.UserRepository;

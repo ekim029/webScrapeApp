@@ -1,7 +1,7 @@
 package com.eric.job_scraper.controller;
 
 import com.eric.job_scraper.model.User;
-import com.eric.job_scraper.service.UserService;
+import com.eric.job_scraper.service.core.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
