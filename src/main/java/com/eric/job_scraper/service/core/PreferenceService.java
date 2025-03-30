@@ -39,7 +39,8 @@ public class PreferenceService {
         preference.setJobTitle(newPreference.getJobTitle());
         preference.setLocation(newPreference.getLocation());
         preference.setRemote(newPreference.isRemote());
-        preference.setKeywords(newPreference.getKeywords());
+        preference.setExcludedKeywords(newPreference.getExcludedKeywords());
+        preference.setDesiredKeywords(newPreference.getDesiredKeywords());
 
         return preferenceRepository.save(preference);
     }

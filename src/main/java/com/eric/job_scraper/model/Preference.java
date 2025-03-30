@@ -21,10 +21,18 @@ public class Preference {
     private boolean remote;
 
     @ElementCollection // Maps a list of strings to a separate table
-    @CollectionTable(name = "preference_keywords", joinColumns = @JoinColumn(name = "preference_id"))
+    @CollectionTable(name = "preference_desired_keywords", joinColumns = @JoinColumn(name = "preference_id"))
     // Table name and join column
-    @Column(name = "keyword") // Column name for the keywords
-    private List<String> keywords; // List of keywords
+    @Column(name = "desired_keyword") // Column name for the keywords
+    private List<String> desiredKeywords; // List of desired keywords
+
+
+    @ElementCollection // Maps a list of strings to a separate table
+    @CollectionTable(name = "preference_excluded_keywords", joinColumns = @JoinColumn(name = "preference_id"))
+    // Table name and join column
+    @Column(name = "excluded_keyword") // Column name for the keywords
+    private List<String> excludedKeywords; // List of desired keywords
+
 
     @ManyToOne // many Preference entities can be associated with one User entity
     @JoinColumn(name = "user_id") // name attribute defines the name of the foreign key column (user_id)
