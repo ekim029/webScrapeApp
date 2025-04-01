@@ -28,12 +28,24 @@ public class JobParserService {
             desiredPattern = Pattern.compile(stringRegex);
         }
 
+        List<String> excludedKeywords = preference.getExcludedKeywords();
+        Pattern excludedPattern;
+        if (excludedKeywords == null || excludedKeywords.isEmpty()) {
+            excludedPattern = Pattern.compile("$^");
+        } else {
+            String stringRegex = excludedKeywords.stream()
+                    .map(keyword -> Pattern.quote(keyword))
+                    .collect(Collectors.joining("|"));
+
+            excludedPattern = Pattern.compile(stringRegex);
+        }
+
         for (String site : scrapedData.keySet()) {
             String data = scrapedData.get(site);
 
             List<String> jobs = new ArrayList<>();
             if (site.equals("Indeed")) {
-                jobs = parseIndeedJobs(data);
+                jobs = parseIndeedJobs(data, desiredPattern, excludedPattern);
             } else if (site.equals("ZipRecruiter")) {
                 jobs = parseZipRecruiterJobs(data);
             }
