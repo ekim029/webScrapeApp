@@ -1,5 +1,6 @@
 package com.eric.job_scraper.service.scraping;
 
+import com.eric.job_scraper.model.Job;
 import com.eric.job_scraper.model.Preference;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class JobParserService {
 
-    public Map<String, List<String>> parseJob(Map<String, String> scrapedData, Preference preference) {
-        Map<String, List<String>> jobsBySite = new HashMap<>();
+    public Map<String, List<Job>> parseJob(Map<String, String> scrapedData, Preference preference) {
+        Map<String, List<Job>> jobsBySite = new HashMap<>();
 
         List<String> desiredKeywords = preference.getDesiredKeywords();
         Pattern desiredPattern;
@@ -43,22 +44,22 @@ public class JobParserService {
         for (String site : scrapedData.keySet()) {
             String data = scrapedData.get(site);
 
-            List<String> jobs = new ArrayList<>();
+            List<Job> jobs = new ArrayList<>();
             if (site.equals("Indeed")) {
                 jobs = parseIndeedJobs(data, desiredPattern, excludedPattern);
             } else if (site.equals("ZipRecruiter")) {
-                jobs = parseZipRecruiterJobs(data);
+                jobs = parseZipRecruiterJobs(data, desiredPattern, excludedPattern);
             }
             jobsBySite.put(site, jobs);
         }
         return jobsBySite;
     }
 
-    public List<String> parseIndeedJobs(String data) {
+    public List<Job> parseIndeedJobs(String data, Pattern desiredPattern, Pattern excludedPattern) {
 
     }
 
-    public List<String> parseZipRecruiterJobs(String data) {
+    public List<Job> parseZipRecruiterJobs(String data, Pattern desiredPattern, Pattern excludedPattern) {
 
     }
 
