@@ -13,6 +13,9 @@ public class JobScraperApplication {
 		System.setProperty("SPRING_DATASOURCE_USERNAME", dotenv.get("SPRING_DATASOURCE_USERNAME"));
 		System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
 
+		System.setProperty("ADZUNA_ID", dotenv.get("ADZUNA_ID"));
+		System.setProperty("ADZUNA_KEY", dotenv.get("ADZUNA_KEY"));
+
 		SpringApplication.run(JobScraperApplication.class, args);
 	}
 
