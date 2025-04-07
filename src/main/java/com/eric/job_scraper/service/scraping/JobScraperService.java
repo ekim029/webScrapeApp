@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class JobScraperService {
@@ -19,9 +20,23 @@ public class JobScraperService {
 
     public Map<String, List<Job>> scrapeJobs(Preference preference) {
         Map<String, List<Job>> jobsBySite = new HashMap<>();
+        List<String> desiredKeywords = preference.getDesiredKeywords();
+        List<String> excludedKeywords = preference.getExcludedKeywords();
         for (JobSiteApi jobSiteApi : jobSiteApis) {
             List<Job> jobs = jobSiteApi.fetchJobs(preference);
-            jobsBySite.put(jobSiteApi.getSiteName(), jobs);
+            List<Job> filteredJobs = jobs.stream()
+                            .filter(job -> {
+                                String description = job.getDescription().toLowerCase();
+                                boolean containsDesired = desiredKeywords == null || desiredKeywords.isEmpty() ||
+                                        desiredKeywords.stream().anyMatch(keyword -> description.contains(keyword.toLowerCase()));
+
+                                boolean containsExcluded = excludedKeywords != null &&
+                                        excludedKeywords.stream().anyMatch(keyword -> description.contains(keyword.toLowerCase()));
+
+                                return containsDesired && !containsExcluded;
+                            })
+                                    .collect(Collectors.toList());
+            jobsBySite.put(jobSiteApi.getSiteName(), filteredJobs);
         }
         return jobsBySite;
     }
