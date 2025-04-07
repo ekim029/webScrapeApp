@@ -1,11 +1,15 @@
 package com.eric.job_scraper.controller;
 
+import com.eric.job_scraper.model.Job;
 import com.eric.job_scraper.model.Preference;
 import com.eric.job_scraper.service.core.PreferenceService;
+import com.eric.job_scraper.service.scraping.JobScraperService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -17,9 +21,11 @@ import java.util.List;
 public class PreferenceController {
 
     private final PreferenceService preferenceService;
+    private final JobScraperService jobScraperService;
 
-    public PreferenceController(PreferenceService preferenceService) {
+    public PreferenceController(PreferenceService preferenceService, JobScraperService jobScraperService) {
         this.preferenceService = preferenceService;
+        this.jobScraperService = jobScraperService;
     }
 
     @PostMapping("/user/{userId}")
@@ -43,4 +49,19 @@ public class PreferenceController {
         return ResponseEntity.ok().build();
     }
 
+
+
+    @GetMapping("/user/{userId}/jobs")
+    public ResponseEntity<List<Job>> getJobsByUserId(@PathVariable Long userId) {
+        Preference preference = preferenceService.getPreferenceByUserId(userId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No preference found for user"));
+
+        Map<String, List<Job>> jobsBySite = jobScraperService.scrapeJobs(preference);
+        List<Job> jobs = jobsBySite.values().stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(jobs);
+    }
 }
